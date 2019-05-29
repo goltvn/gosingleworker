@@ -5,34 +5,15 @@ My first golang project, aim is to create a rest API that will take incoming req
 
 performing one task can take a long time, and there can only be one worker and one job processed at a time.
 
-Test of starting jobs (windows batch) - loop-set.cmd
+Test of starting jobs (windows batch) - this starts job no 100 - there are scripts that automate alot of requests ( loop-set.cmd )
 
-@echo off
-set loopcount=%1
-:loop
-set /a loopcount=loopcount-1
-echo %loopcount%
-START /i /b curl http://localhost:9090/StartJob?id=%loopcount
-if %loopcount%==0 goto exitloop
-goto loop
-:exitloop
-pause
+START /i /b curl http://localhost:9090/StartJob?id=100
 
-run ex with loop-set 100
 
-it creates job 99 down to job 0.
+to get some status values can call : 
 
-Note if the database already have them created it will not create them again.
-
-script to test getting status values :
-
-get-act.cmd
-:loop
  curl -i http://localhost:9090/GetActiveJob
-sleep 1
- curl -i http://localhost:9090/GetFinishedJobs
-sleep 1
- curl -i http://localhost:9090/GetWaitingJobs
-sleep 1
 
-it performs an api lookup every 1 second pr one of the 3 above to show active jobno, no of finished jobs, no of waiting jobs
+ curl -i http://localhost:9090/GetFinishedJobs
+ 
+ curl -i http://localhost:9090/GetWaitingJobs
